@@ -1,73 +1,76 @@
-// Función para encriptar el texto
-function encrypt() {
-  var texto = document.getElementById("text").value.toLowerCase();
-  var encryptedText = "";
+const textArea = document.querySelector(".text-area");
+const mensaje = document.querySelector(".mensaje");
+const copia = document.querySelector(".copiar");
+copia.style.display = "none"
 
-  // Lógica de encriptación
-  for (var i = 0; i < texto.length; i++) {
-    var char = texto.charAt(i);
-    var encryptedChar = "";
 
-    switch (char) {
-      case "e":
-        encryptedChar = "enter";
-        break;
-      case "i":
-        encryptedChar = "imes";
-        break;
-      case "a":
-        encryptedChar = "ai";
-        break;
-      case "o":
-        encryptedChar = "ober";
-        break;
-      case "u":
-        encryptedChar = "ufat";
-        break;
-      default:
-        encryptedChar = char;
-        break;
+function validarTexto(){
+    let textoEscrito = document.querySelector(".text-area").value;
+    let validador = textoEscrito.match(/^[a-z]*$/);
+
+    if(!validador || validador === 0) {
+        alert("Solo son permitidas letras minúsculas y sin acentos")
+        location.reload();
+        return true;
     }
-
-    encryptedText += encryptedChar;
-  }
-
-  document.getElementById("resultado").value = encryptedText;
 }
 
-// Función para desencriptar el texto
-function decrypt() {
-  var encryptedText = document.getElementById("resultado").value.toLowerCase();
-  var decryptedText = "";
 
-  // Lógica de desencriptación
-  for (var i = 0; i < encryptedText.length; i++) {
-    var char = encryptedText.charAt(i);
-    var decryptedChar = "";
-
-    switch (char) {
-      case "enter":
-        decryptedChar = "e";
-        break;
-      case "imes":
-        decryptedChar = "i";
-        break;
-      case "ai":
-        decryptedChar = "a";
-        break;
-      case "ober":
-        decryptedChar = "o";
-        break;
-      case "ufat":
-        decryptedChar = "u";
-        break;
-      default:
-        decryptedChar = char;
-        break;
+function btnEncriptar(){
+    if(!validarTexto()) {
+        const textoEncriptado = encriptar(textArea.value)
+        mensaje.value = textoEncriptado
+        mensaje.style.backgroundImage = "none"
+        textArea.value = "";
+        copia.style.display = "block"
+    
     }
-
-    decryptedText += decryptedChar;
-  }
-
-  document.getElementById("text").value = decryptedText;
 }
+
+function encriptar(stringEncriptada){
+    let matrizCodigo = [["e", "enter"], ["i", "imes"], ["a", "ai"], ["o", "ober"], ["u", "ufat"]];
+    stringEncriptada = stringEncriptada.toLowerCase()
+
+    for(let i = 0; i < matrizCodigo.length; i++){
+        if(stringEncriptada.includes(matrizCodigo[i][0])){
+            stringEncriptada = stringEncriptada.replaceAll(matrizCodigo[i][0], matrizCodigo[i][1])
+
+        }
+
+    }
+    return stringEncriptada
+}
+
+
+
+function btnDesencriptar(){
+    const textoEncriptado = desencriptar(textArea.value)
+    mensaje.value = textoEncriptado
+    textArea.value = "";
+    
+}
+
+
+function desencriptar(stringDesencriptada){
+    let matrizCodigo = [["e", "enter"], ["i", "imes"], ["a", "ai"], ["o", "ober"], ["u", "ufat"]];
+    stringDesencriptada = stringDesencriptada.toLowerCase()
+
+    for(let i = 0; i < matrizCodigo.length; i++){
+        if(stringDesencriptada.includes(matrizCodigo[i][1])){
+            stringDesencriptada = stringDesencriptada.replaceAll(matrizCodigo[i][1] , matrizCodigo[i][0])
+
+        }
+
+    }
+    return stringDesencriptada
+}
+
+
+function copiar(){
+    mensaje.select();
+    navigator.clipboard.writeText(mensaje.value)
+    mensaje.value = "";
+    alert("Texto Copiado")
+}
+
+
