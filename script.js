@@ -32,12 +32,12 @@ function encrypt() {
     encryptedText += encryptedChar;
   }
 
-  document.getElementById("result").value = encryptedText;
+  document.getElementById("resultado").value = encryptedText;
 }
 
 // Función para desencriptar el texto
 function decrypt() {
-  var encryptedText = document.getElementById("result").value.toLowerCase();
+  var encryptedText = document.getElementById("resultado").value.toLowerCase();
   var decryptedText = "";
 
   // Lógica de desencriptación
